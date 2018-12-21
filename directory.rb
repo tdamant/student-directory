@@ -1,3 +1,5 @@
+
+
 #create students array
 def input_cohorts
   cohorts = [
@@ -17,7 +19,7 @@ def input_cohorts
   puts 'And now please enter the students cohort'
   cohort = gets.chomp.to_sym
   if !cohorts.include?(cohort)
-    # December set as default cohort if input not valid
+    # December set as default cohort
     cohort = cohorts[0]
   end
   cohort
@@ -43,12 +45,15 @@ def print_header
 end
 
 def print(students)
-  counter = 0
-  while counter < students.length do
-    student = students[counter]
-    puts "#{counter + 1}. #{student[:name]} (#{student[:cohort]} cohort)".center(50)
-    counter += 1
+  months = []
+  students.each do |student|
+    if !months.include?(student[:cohort])
+      months += [student[:cohort], "--------", student[:name], "--------"]
+    else
+      months.insert((months.index(student[:cohort])+2),student[:name])
+    end
   end
+  puts months
 end
 
 def print_footer(students)
