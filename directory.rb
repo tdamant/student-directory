@@ -28,7 +28,6 @@ end
 def input_names
   puts 'Please enter the names of the students'.center(50)
   puts 'To finish, just hit return twice'.center(50)
-  @students = []
   name = gets.gsub(/\n/,"")
   while !name.empty? do
     cohort = input_cohorts
@@ -40,7 +39,6 @@ def input_names
     end
     name = gets.gsub(/\n/,"")
   end
-  @students
 end
 
 def print_header
@@ -48,7 +46,7 @@ def print_header
   puts "-------------".center(50)
 end
 
-def print(students)
+def print_students_and_cohorts
   months = []
   @students.each do |student|
     if !months.include?(student[:cohort])
@@ -60,35 +58,46 @@ def print(students)
   puts months
 end
 
-def print_footer(students)
+def print_footer
   puts "Overall, we have #{@students.count} great students".center(50)
 end
+
+def print_menu
+  puts "Choose from the following options"
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def print_students
+  print_header
+  print_students_and_cohorts
+  print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_names
+  when "2"
+    print_students
+  when "9"
+    exit
+  else
+    puts "please enter a valid input"
+  end
+end
+
 
 def interactive_menu
   @students = []
   loop do
-    puts "Your options are:\n1. Input the students\n2. Show the students\n9. Exit"
-    selection = gets.chomp
-    case selection
-    when "1"
-      @students = input_names
-    when "2"
-      print_header
-      print(@students)
-      print_footer(@students)
-    when "9"
-      exit
-    else
-      puts "please enter a valid input"
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
 interactive_menu
-# @students = input_names
-# print_header
-# print(@students)
-# print_footer(@students)
 
 # def choose_starting_letter
 #   letter = ''
