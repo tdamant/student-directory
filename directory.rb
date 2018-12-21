@@ -65,9 +65,13 @@ def print_footer(students)
 end
 
 students = input_names
-print_header
-print(students)
-print_footer(students)
+if !students.empty?
+  print_header
+  print(students)
+  print_footer(students)
+end
+
+
 
 # def choose_starting_letter
 #   letter = ''
