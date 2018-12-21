@@ -33,7 +33,11 @@ def input_names
   while !name.empty? do
     cohort = input_cohorts
     students << {name: name, cohort: cohort}
-    puts "Now we have #{students.count} students".center(50)
+    if students.count == 1
+      puts "Now we have #{students.count} student".center(50)
+    else
+      puts "Now we have #{students.count} students".center(50)
+    end
     name = gets.chomp
   end
   students
