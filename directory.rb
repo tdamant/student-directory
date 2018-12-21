@@ -30,15 +30,6 @@ def input_names
   end
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    add_names_to_students(name, cohort)
-  end
-  file.close
-end
-
 def print_header
   puts "The students of Villains Academy"
   puts "-------------"
@@ -86,10 +77,21 @@ def save_students
   file.close
 end
 
-def try_load_students
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(',')
+    add_names_to_students(name, cohort)
+  end
+  file.close
+end
+
+def try_load_students()
   filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
+  if filename.nil?
+    load_students()
+    puts "Loaded #{@students.count} students"
+  elsif File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
   else
