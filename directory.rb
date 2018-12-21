@@ -1,6 +1,6 @@
 
 
-#create students array
+#create @students array
 def input_cohorts
   cohorts = [
     :December,
@@ -28,19 +28,19 @@ end
 def input_names
   puts 'Please enter the names of the students'.center(50)
   puts 'To finish, just hit return twice'.center(50)
-  students = []
+  @students = []
   name = gets.gsub(/\n/,"")
   while !name.empty? do
     cohort = input_cohorts
-    students << {name: name, cohort: cohort}
-    if students.count == 1
-      puts "Now we have #{students.count} student".center(50)
+    @students << {name: name, cohort: cohort}
+    if @students.count == 1
+      puts "Now we have #{@students.count} student".center(50)
     else
-      puts "Now we have #{students.count} students".center(50)
+      puts "Now we have #{@students.count} students".center(50)
     end
     name = gets.gsub(/\n/,"")
   end
-  students
+  @students
 end
 
 def print_header
@@ -50,7 +50,7 @@ end
 
 def print(students)
   months = []
-  students.each do |student|
+  @students.each do |student|
     if !months.include?(student[:cohort])
       months += [student[:cohort], "--------", student[:name], "--------"]
     else
@@ -61,17 +61,34 @@ def print(students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students".center(50)
+  puts "Overall, we have #{@students.count} great students".center(50)
 end
 
-students = input_names
-if !students.empty?
-  print_header
-  print(students)
-  print_footer(students)
+def interactive_menu
+  @students = []
+  loop do
+    puts "Your options are:\n1. Input the students\n2. Show the students\n9. Exit"
+    selection = gets.chomp
+    case selection
+    when "1"
+      @students = input_names
+    when "2"
+      print_header
+      print(@students)
+      print_footer(@students)
+    when "9"
+      exit
+    else
+      puts "please enter a valid input"
+    end
+  end
 end
 
-
+interactive_menu
+# @students = input_names
+# print_header
+# print(@students)
+# print_footer(@students)
 
 # def choose_starting_letter
 #   letter = ''
