@@ -17,7 +17,7 @@ def input_cohorts
     :November
   ]
   puts 'And now please enter the students cohort'
-  cohort = gets.chomp.to_sym
+  cohort = gets.gsub(/\n/,"").to_sym
   if !cohorts.include?(cohort)
     # December set as default cohort
     cohort = cohorts[0]
@@ -29,7 +29,7 @@ def input_names
   puts 'Please enter the names of the students'.center(50)
   puts 'To finish, just hit return twice'.center(50)
   students = []
-  name = gets.chomp
+  name = gets.gsub(/\n/,"")
   while !name.empty? do
     cohort = input_cohorts
     students << {name: name, cohort: cohort}
@@ -38,7 +38,7 @@ def input_names
     else
       puts "Now we have #{students.count} students".center(50)
     end
-    name = gets.chomp
+    name = gets.gsub(/\n/,"")
   end
   students
 end
@@ -72,9 +72,9 @@ print_footer(students)
 # def choose_starting_letter
 #   letter = ''
 #   puts 'do you want to print names begging with which letter?'.center(50)
-#   input = gets.chomp.upcase
+#   input = gets.gsub(/\n/,"").upcase
 #   if input == "YES"
 #     puts 'What letter'
-#     letter = gets.chomp
+#     letter = gets.gsub(/\n/,"")
 #   end
 # end
