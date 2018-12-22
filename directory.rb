@@ -78,12 +78,12 @@ end
 def save_students()
   puts "Please choose a file to save to, make sure it ends in .csv"
   file_name = STDIN.gets.chomp
-  file = File.open(file_name, "w")
-  @students.each do |student|
-  student_data = [student[:name], student[:cohort].to_s].join(",")
-    file.puts student_data
+  File.open(file_name, "w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort].to_s].join(",")
+      file.puts student_data
+    end
   end
-  file.close
 end
 
 def choose_file
@@ -92,19 +92,13 @@ def choose_file
   check_file(file_name)
 end
 
-
 def load_file(file_name)
-  if @loaded_file == file_name
-    return
-  else
-    @loaded_file = file_name
-    @students = []
-    file = File.open(file_name, "r")
+  @students = []
+  File.open(file_name, "r") do |file|
     file.readlines.each do |line|
       name, cohort = line.chomp.split(',')
       add_names_to_students(name, cohort)
     end
-    file.close
   end
 end
 
@@ -123,8 +117,7 @@ def load_students_on_start
   file_name = ARGV.first
   file_to_load = check_file(file_name)
   load_file(file_to_load)
-  @loaded_file = file_to_load
-  puts "Loaded #{@students.count} from #{@loaded_file} students"
+  puts "Loaded #{@students.count} students from #{@loaded_file}"
 end
 
 load_students_on_start
