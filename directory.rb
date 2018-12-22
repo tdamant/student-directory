@@ -4,8 +4,8 @@ def print_menu
   menu = ["Choose from the following options",
   "1. Input the students",
   "2. Show the students",
-  "3. Save the list to students.csv",
-  "4. Load students.csv",
+  "3. Save the list to file",
+  "4. Load from file",
   "9. Exit"]
   puts menu
 end
@@ -55,22 +55,30 @@ end
 def process(selection)
   case selection
   when "1"
+    puts "You choose to enter names:"
     input_names
   when "2"
+    puts "You choose to print the list of students:"
     print_students
   when "3"
+    puts "You choose to save the students:"
     save_students
   when "4"
-    load_students
+    puts "You choose to load the students:"
+    file_name = choose_file
+    load_file(file_name)
   when "9"
+    puts "You have choosen to exit the programe, goodbye"
     exit
   else
     puts "please enter a valid input"
   end
 end
 
-def save_students
-  file = File.open("students.csv", "w")
+def save_students()
+  puts "Please choose a file to save to, make sure it ends in .csv"
+  file_name = STDIN.gets.chomp
+  file = File.open(file_name, "w")
   @students.each do |student|
   student_data = [student[:name], student[:cohort].to_s].join(",")
     file.puts student_data
@@ -78,31 +86,45 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    add_names_to_students(name, cohort)
-  end
-  file.close
+def choose_file
+  puts "please enter a file name to load, if you don't enter one students.csv will be choosen as default"
+  file_name = STDIN.gets.chomp
+  check_file(file_name)
 end
 
-def check_file(filename)
-  if filename.nil?
-    return "students.csv"
-  elsif File.exists?(filename)
-    filename
+
+def load_file(file_name)
+  if @loaded_file == file_name
+    return
   else
-    puts "Sorry #{filename} doesn't exist"
+    @loaded_file = file_name
+    @students = []
+    file = File.open(file_name, "r")
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      add_names_to_students(name, cohort)
+    end
+    file.close
+  end
+end
+
+def check_file(file_name)
+  if file_name.nil?
+    return "students.csv"
+  elsif File.exists?(file_name)
+    file_name
+  else
+    puts "Sorry #{file_name} doesn't exist"
     exit
   end
 end
 
-def load_students_on_start()
-  filename = ARGV.first
-  load_file = check_file(filename)
-  load_students(load_file)
-  puts "Loaded #{@students.count} students"
+def load_students_on_start
+  file_name = ARGV.first
+  file_to_load = check_file(file_name)
+  load_file(file_to_load)
+  @loaded_file = file_to_load
+  puts "Loaded #{@students.count} from #{@loaded_file} students"
 end
 
 load_students_on_start
