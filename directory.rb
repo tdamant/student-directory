@@ -1,12 +1,13 @@
 @students = []
 
 def print_menu
-  puts "Choose from the following options"
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load students.csv"
-  puts "9. Exit"
+  menu = ["Choose from the following options",
+  "1. Input the students",
+  "2. Show the students",
+  "3. Save the list to students.csv",
+  "4. Load students.csv",
+  "9. Exit"]
+  puts menu
 end
 
 def interactive_menu
@@ -86,19 +87,23 @@ def load_students(filename = "students.csv")
   file.close
 end
 
-def try_load_students()
-  filename = ARGV.first
+def check_file(filename)
   if filename.nil?
-    load_students()
-    puts "Loaded #{@students.count} students"
+    return "students.csv"
   elsif File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+    filename
   else
     puts "Sorry #{filename} doesn't exist"
     exit
   end
 end
 
-try_load_students
+def load_students_on_start()
+  filename = ARGV.first
+  load_file = check_file(filename)
+  load_students(load_file)
+  puts "Loaded #{@students.count} students"
+end
+
+load_students_on_start
 interactive_menu
