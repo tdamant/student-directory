@@ -94,6 +94,7 @@ end
 
 def load_file(file_name)
   @students = []
+  @loaded_file = file_name
   CSV.foreach(file_name) do |row|
     name, cohort = row
     add_names_to_students(name, cohort)
